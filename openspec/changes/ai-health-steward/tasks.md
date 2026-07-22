@@ -31,13 +31,13 @@
 
 - [x] 3.1 实现 report-ingestion 能力：图片/PDF 上传（AI 咨询页 + 指标页上传浮窗）
 - [x] 3.2 实现 report-ingestion 能力：多模态结构化抽取（调用多模态 API，AI 直接解读）
-- [ ] 3.3 实现 report-ingestion 能力：抽取结果用户确认与编辑修正（结构化 JSON 确认面板）
-- [ ] 3.4 实现 report-ingestion 能力：报告姓名识别与归属匹配（默认本人+匹配+手动覆盖）
-- [ ] 3.5 实现 health-profile 能力：报告数据入档（含原始文件引用溯源）
+- [x] 3.3 实现 report-ingestion 能力：抽取结果用户确认与编辑修正（结构化 JSON 确认面板）
+- [x] 3.4 实现 report-ingestion 能力：报告姓名识别与归属匹配（默认本人+匹配+手动覆盖）
+- [x] 3.5 实现 health-profile 能力：报告数据入档（含原始文件引用溯源）
 - [x] 3.6 实现 visualization 能力：指标可视化中心（Tab 切换 + 多指标线同图 + 医学标准参考范围）
 - [x] 3.7 实现 visualization 能力：异常项标识（基于参考范围 + 危急值阈值）
 - [x] 3.8 实现 visualization 能力：指标新增数据浮窗（定制化备注 + BMI 实时计算 + 汇总卡片）
-- [ ] 3.9 实现 visualization 能力：画像看板（基础信息+指标摘要+异常项+诊断用药）
+- [x] 3.9 实现 visualization 能力：画像看板（基础信息+指标摘要+异常项+诊断用药）
 - [ ] 3.10 实现 health-profile 能力：向量化知识库（原始报告文本+自由摘要，RAG 检索）
 - [ ] 3.11 实现 report-ingestion 能力：报告导入状态流转（已上传→抽取中→待确认→已入档）
 
