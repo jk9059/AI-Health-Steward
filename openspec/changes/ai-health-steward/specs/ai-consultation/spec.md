@@ -119,3 +119,56 @@
 #### Scenario: 模型 API 调用失败
 - **WHEN** 意图处理过程中模型 API 调用失败（如服务不可用、限流、超时）
 - **THEN** 系统向用户提示"AI 服务暂时不可用，请稍后重试"，对话历史保留不丢失，用户可重新发送消息
+
+### Requirement: 多模态对话输入
+系统 SHALL 支持用户在 AI 咨询对话中直接上传图片（JPG/PNG/WebP）和 PDF 文件，AI 通过多模态模型识别文件内容并基于内容回答。当输入含视觉内容时，系统路由到多模态 API provider。
+
+#### Scenario: 上传图片咨询
+- **WHEN** 用户在 AI 咨询页面通过文件按钮上传一张化验单图片并发送消息
+- **THEN** 系统将图片转为 base64 data URL，路由到多模态 API provider，AI 识别图片内容并回复解读
+
+#### Scenario: 上传 PDF 咨询
+- **WHEN** 用户上传一份 PDF 格式的体检报告并发送消息
+- **THEN** 系统将 PDF 转为 base64 data URL，路由到多模态 API provider，AI 识别报告内容并回复
+
+#### Scenario: 粘贴图片到输入框
+- **WHEN** 用户在对话输入框中粘贴剪贴板中的图片
+- **THEN** 系统自动将粘贴的图片设为附件，显示预览缩略图，用户可直接发送让 AI 解读
+
+#### Scenario: 不支持的文件格式
+- **WHEN** 用户上传或粘贴非图片/PDF 文件
+- **THEN** 系统拒绝并提示"仅支持 JPG/PNG/WebP/PDF 格式"
+
+#### Scenario: 文件超过大小限制
+- **WHEN** 用户上传超过 20MB 的文件
+- **THEN** 系统拒绝并提示"文件过大，请上传 20MB 以内的文件"
+
+### Requirement: 流式对话输出
+系统 SHALL 通过 SSE（Server-Sent Events）流式输出 AI 回复内容，用户在 AI 生成回答时即可看到逐字渲染的效果，而非等待完整回复后才显示。
+
+#### Scenario: 流式输出正常
+- **WHEN** 用户发送消息后 AI 开始生成回答
+- **THEN** 前端通过 SSE 接收逐字内容增量，实时渲染到对话气泡中，伴有光标闪烁动画
+
+#### Scenario: 流式输出中显示加载状态
+- **WHEN** AI 正在处理请求但尚未输出内容
+- **THEN** 对话区域显示"AI 思考中..."骨架占位，输入框禁用，发送按钮显示加载图标
+
+#### Scenario: 流式输出失败
+- **WHEN** AI 服务在流式输出过程中发生错误
+- **THEN** 系统显示错误信息"AI 服务暂时不可用"，对话历史保留，用户可重新发送
+
+### Requirement: AI 回复 Markdown 渲染
+系统 SHALL 将 AI 回复内容以 Markdown 格式渲染展示，支持标题、粗体、表格、列表、代码块等格式，使健康解读结果结构化可读。
+
+#### Scenario: AI 回复包含表格
+- **WHEN** AI 回复内容包含 Markdown 表格（如指标对照表）
+- **THEN** 前端将表格渲染为 HTML 表格，含表头高亮和行间距
+
+#### Scenario: AI 回复包含粗体和列表
+- **WHEN** AI 回复内容包含粗体文本和有序/无序列表
+- **THEN** 前端正确渲染 Markdown 格式，粗体加粗显示，列表带缩进和序号
+
+#### Scenario: 用户消息不渲染 Markdown
+- **WHEN** 用户发送的消息内容包含特殊字符（如 *、#、|）
+- **THEN** 用户消息以纯文本展示，不做 Markdown 渲染
